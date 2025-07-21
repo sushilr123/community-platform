@@ -1,55 +1,74 @@
 const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
 const path = require("path");
 const session = require("express-session");
-require("dotenv").config();
+const cors = require("cors");
+
+// Import configuration and utilities
+const config = require("./src/config/config");
+const connectDB = require("./src/config/database");
+const globalErrorHandler = require("./src/utils/errorHandler");
+const AppError = require("./src/utils/appError");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+
+// Connect to database
+connectDB();
 
 // Middleware
-app.use(cors());
-app.use(express.json());
-app.use(express.static(path.join(__dirname)));
+app.use(cors({
+  origin: config.CORS_ORIGIN,
+  credentials: true
+}));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Session middleware
 app.use(
   session({
-    secret: process.env.SESSION_SECRET || "your-session-secret",
+    secret: config.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, maxAge: 24 * 60 * 60 * 1000 }, // 24 hours
+    cookie: { 
+      secure: config.NODE_ENV === 'production', 
+      maxAge: config.SESSION_MAX_AGE,
+      httpOnly: true
+    },
   })
 );
 
-// Connect to MongoDB
-mongoose
-  .connect(
-    process.env.MONGODB_URI || "mongodb://localhost:27017/community-platform",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("MongoDB connection error:", err));
-
 // Routes
-const authRoutes = require("./routes/auth");
-const postRoutes = require("./routes/routes");
-const mentorshipRoutes = require("./routes/mentorship");
+const authRoutes = require("./src/routes/auth");
+const postRoutes = require("./src/routes/routes");
+const mentorshipRoutes = require("./src/routes/mentorship");
 
 app.use("/api/auth", authRoutes);
-// Mentorship routes must come before generic /api routes to avoid route conflicts
 app.use("/api/mentorship", mentorshipRoutes);
 app.use("/api", postRoutes);
 
 // Serve the frontend
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(__dirname, "views", "index.html"));
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+// Handle undefined routes
+app.all('*', (req, res, next) => {
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
+});
+
+// Global error handling middleware
+app.use(globalErrorHandler);
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('👋 SIGTERM RECEIVED. Shutting down gracefully');
+  server.close(() => {
+    console.log('💥 Process terminated!');
+  });
+});
+
+const server = app.listen(config.PORT, () => {
+  console.log(`🚀 Server running in ${config.NODE_ENV} mode on port ${config.PORT}`);
 });

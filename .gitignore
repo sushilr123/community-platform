@@ -93,13 +93,23 @@ tmp/
 temp/
 
 # Logs
-logs
+logs/
 *.log
 
 # Database
 *.db
 *.sqlite
 *.sqlite3
+
+# Production builds
+build/
+dist/
+
+# PM2 ecosystem file (if contains sensitive data)
+# ecosystem.config.js
+
+# Docker
+.dockerignore
 
 # IDE and Editor files
 .vscode/

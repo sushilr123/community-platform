@@ -8,6 +8,17 @@ const {
   mentorOrAdmin,
 } = require("../middleware/auth");
 
+// Health check endpoint
+router.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "success",
+    message: "Server is running properly",
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
+
 // Get all posts by type (public access)
 router.get("/posts/:type", async (req, res) => {
   try {
