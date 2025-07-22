@@ -11,6 +11,22 @@ mongoose.connect(
 
 async function createTestUsers() {
   try {
+    // Create an admin account
+    const adminPassword = await bcrypt.hash("admin123", 10);
+    const admin = new User({
+      username: "admin",
+      email: "admin@test.com",
+      password: adminPassword,
+      role: "admin",
+      fullName: "Admin User",
+      bio: "Platform administrator with full access",
+      skills: [
+        "System Administration",
+        "User Management",
+        "Platform Oversight",
+      ],
+    });
+
     // Create a mentor account
     const mentorPassword = await bcrypt.hash("mentor123", 10);
     const mentor = new User({
@@ -39,6 +55,15 @@ async function createTestUsers() {
 
     // Save users (will skip if they already exist due to unique constraints)
     try {
+      await admin.save();
+      console.log("Admin account created:", admin.username);
+    } catch (error) {
+      if (error.code === 11000) {
+        console.log("Admin account already exists");
+      }
+    }
+
+    try {
       await mentor.save();
       console.log("Mentor account created:", mentor.username);
     } catch (error) {
@@ -57,6 +82,7 @@ async function createTestUsers() {
     }
 
     console.log("\nTest accounts:");
+    console.log("Admin - username: admin, password: admin123");
     console.log("Mentor - username: mentor1, password: mentor123");
     console.log("User - username: user1, password: user123");
   } catch (error) {
