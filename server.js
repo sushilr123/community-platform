@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Session middleware
 app.use(
@@ -39,10 +39,28 @@ app.use("/api/mentorship", mentorshipRoutes);
 app.use("/api", postRoutes);
 
 // Serve the frontend
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "views", "index.html"));
+app.get("/*", (req, res) => {
+  // Check if the request is for an API route
+  if (req.path.startsWith("/api/")) {
+    return res.status(404).json({ message: "API route not found" });
+  }
+
+  // Determine which HTML file to serve
+  const filePath = req.path.endsWith(".html") ? req.path : "index.html";
+  const fullPath = path.join(__dirname, "views", filePath);
+
+  // Send the file if it exists, otherwise send index.html
+  res.sendFile(fullPath, (err) => {
+    if (err) {
+      res.sendFile(path.join(__dirname, "views", "index.html"));
+    }
+  });
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Server running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${PORT}`);
+  console.log(
+    `🚀 Server running in ${
+      process.env.NODE_ENV || "development"
+    } mode on http://localhost:${PORT}`
+  );
 });
