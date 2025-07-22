@@ -38,27 +38,25 @@ app.use("/api/auth", authRoutes);
 app.use("/api/mentorship", mentorshipRoutes);
 app.use("/api", postRoutes);
 
-// Serve the frontend
-app.get("/*", (req, res) => {
-  // Check if the request is for an API route
-  if (req.path.startsWith("/api/")) {
-    return res.status(404).json({ message: "API route not found" });
-  }
+// Serve static HTML files
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "index.html"));
+});
 
-  // Determine the file path, defaulting to index.html
-  let fileName = req.path;
-  if (fileName === "/") {
-    fileName = "index.html";
-  }
+app.get("/index.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "index.html"));
+});
 
-  const filePath = path.join(__dirname, "views", fileName);
+app.get("/login.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "login.html"));
+});
 
-  // Send the requested file, or index.html for SPA fallback
-  res.sendFile(filePath, (err) => {
-    if (err) {
-      res.sendFile(path.join(__dirname, "views", "index.html"));
-    }
-  });
+app.get("/register.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "register.html"));
+});
+
+app.get("/mentorship.html", (req, res) => {
+  res.sendFile(path.join(__dirname, "views", "mentorship.html"));
 });
 
 app.listen(PORT, () => {
