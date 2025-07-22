@@ -15,15 +15,17 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors({
-  origin: config.CORS_ORIGIN,
-  credentials: true
-}));
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(
+  cors({
+    origin: config.CORS_ORIGIN,
+    credentials: true,
+  })
+);
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 // Serve static files
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Session middleware
 app.use(
@@ -31,10 +33,10 @@ app.use(
     secret: config.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { 
-      secure: config.NODE_ENV === 'production', 
+    cookie: {
+      secure: config.NODE_ENV === "production",
       maxAge: config.SESSION_MAX_AGE,
-      httpOnly: true
+      httpOnly: true,
     },
   })
 );
@@ -54,7 +56,7 @@ app.get("/", (req, res) => {
 });
 
 // Handle undefined routes
-app.all('*', (req, res, next) => {
+app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404));
 });
 
@@ -62,13 +64,15 @@ app.all('*', (req, res, next) => {
 app.use(globalErrorHandler);
 
 // Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('👋 SIGTERM RECEIVED. Shutting down gracefully');
+process.on("SIGTERM", () => {
+  console.log("👋 SIGTERM RECEIVED. Shutting down gracefully");
   server.close(() => {
-    console.log('💥 Process terminated!');
+    console.log("💥 Process terminated!");
   });
 });
 
 const server = app.listen(config.PORT, () => {
-  console.log(`🚀 Server running in ${config.NODE_ENV} mode on port ${config.PORT}`);
+  console.log(
+    `🚀 Server running in ${config.NODE_ENV} mode on port ${config.PORT}`
+  );
 });

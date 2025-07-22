@@ -1,0 +1,15 @@
+# Render deployment configuration
+# This file is automatically detected by Render
+
+# Build settings
+buildCommand: npm install
+startCommand: npm start
+
+# Environment
+environment: node
+
+# Health check
+healthCheckPath: /api/health
+
+# Auto-deploy
+autoDeploy: true

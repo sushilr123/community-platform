@@ -1,11 +1,11 @@
-const http = require('http');
-const config = require('./src/config/config');
+const http = require("http");
+const config = require("./src/config/config");
 
 const options = {
-  host: 'localhost',
+  host: "localhost",
   port: config.PORT,
   timeout: 2000,
-  path: '/api/health'
+  path: "/api/health",
 };
 
 const request = http.request(options, (res) => {
@@ -17,8 +17,8 @@ const request = http.request(options, (res) => {
   }
 });
 
-request.on('error', function(err) {
-  console.log('ERROR');
+request.on("error", function (err) {
+  console.log("ERROR");
   process.exit(1);
 });
 

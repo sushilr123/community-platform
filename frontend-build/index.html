@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <div class="header-container">
+                <!-- Left side dropdown menu -->
+                <div class="dropdown-menu" id="dropdownMenu">
+                    <button class="dropdown-trigger" id="dropdownTrigger">
+                        <div class="hamburger">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div class="user-avatar" id="headerAvatar">U</div>
+                    </button>
+                    <div class="dropdown-content" id="dropdownContent">
+                        <div class="dropdown-header">
+                            <div class="user-avatar-large" id="dropdownAvatar">U</div>
+                            <div class="user-details">
+                                <div class="user-name" id="dropdownUserName">User Name</div>
+                                <div class="user-role-badge" id="dropdownUserRole">User</div>
+                            </div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item" data-action="profile">
+                            <span class="dropdown-icon">👤</span>
+                            My Profile
+                        </a>
+                        <a href="#" class="dropdown-item" data-action="settings">
+                            <span class="dropdown-icon">⚙️</span>
+                            Settings
+                        </a>
+                        <a href="#" class="dropdown-item" data-action="help">
+                            <span class="dropdown-icon">❓</span>
+                            Help & Support
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item logout-item" id="dropdownLogout">
+                            <span class="dropdown-icon">🚪</span>
+                            Logout
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Center title -->
+                <div class="header-center">
+                    <h1 class="platform-title">
+                        <span class="title-icon">🌟</span>
+                        Community Platform
+                    </h1>
+                    <p class="platform-subtitle">Connect, Learn, and Grow Together</p>
+                </div>
+                
+                <!-- Right side notifications -->
+                <div class="header-right">
+                    <button class="notification-btn" id="notificationBtn">
+                        <span class="notification-icon">🔔</span>
+                        <span class="notification-badge" id="notificationBadge">3</span>
+                    </button>
+                    <button class="search-btn" id="searchBtn">
+                        <span class="search-icon">🔍</span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Enhanced Navigation -->
+            <nav class="main-nav">
+                <div class="nav-container">
+                    <button data-tab="discussions" class="nav-item active">
+                        <span class="nav-icon">💬</span>
+                        <span class="nav-text">Discussions</span>
+                    </button>
+                    <button data-tab="milestones" class="nav-item">
+                        <span class="nav-icon">🎯</span>
+                        <span class="nav-text">Milestones</span>
+                    </button>
+                    <button data-tab="q-and-a" class="nav-item">
+                        <span class="nav-icon">❓</span>
+                        <span class="nav-text">Q&A</span>
+                    </button>
+                    <button data-tab="mentorship" class="nav-item">
+                        <span class="nav-icon">🤝</span>
+                        <span class="nav-text">Mentorship</span>
+                    </button>
+                    <a href="mentorship.html" data-tab="mentorship" class="nav-item" id="mentorshipHubTab" style="display: none;">
+                        <span class="nav-icon">🤝</span>
+                        <span class="nav-text">Mentorship Hub</span>
+                    </a>
+                    <button data-tab="profile" class="nav-item">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">Profile</span>
+                    </button>
+                    <button data-tab="admin" class="nav-item" id="adminTab" style="display: none;">
+                        <span class="nav-icon">⚡</span>
+                        <span class="nav-text">Admin Panel</span>
+                    </button>
+                </div>
+            </nav>
+        </header>
+        <main>
+            <section id="discussions" class="tab-content active">
+                <h2>Discussions</h2>
+                <div class="post-form">
+                    <textarea placeholder="Start a new discussion..."></textarea>
+                    <button>Post</button>
+                </div>
+                <div class="posts">
+                    <!-- Posts will be dynamically added here -->
+                </div>
+            </section>
+            <section id="milestones" class="tab-content">
+                <h2>Milestones</h2>
+                <div class="post-form">
+                    <textarea placeholder="Share a milestone..."></textarea>
+                    <button>Post</button>
+                </div>
+                <div class="posts">
+                    <!-- Milestones will be dynamically added here -->
+                </div>
+            </section>
+            <section id="q-and-a" class="tab-content">
+                <h2>Q&A</h2>
+                <div class="post-form">
+                    <textarea placeholder="Ask a question..."></textarea>
+                    <button>Post</button>
+                </div>
+                <div class="posts">
+                    <!-- Questions will be dynamically added here -->
+                </div>
+            </section>
+            <section id="mentorship" class="tab-content">
+                <h2>Mentorship</h2>
+                <div class="mentors">
+                    <!-- Mentors will be dynamically added here -->
+                </div>
+            </section>
+            <section id="profile" class="tab-content">
+                <h2>My Profile</h2>
+                <div class="profile-container">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            <div class="avatar-circle" id="profileAvatar"></div>
+                            <button class="change-avatar-btn" id="changeAvatarBtn">📷</button>
+                        </div>
+                        <div class="profile-info">
+                            <h3 id="profileUsername"></h3>
+                            <span class="profile-role" id="profileRole"></span>
+                            <p class="profile-joined" id="profileJoined"></p>
+                        </div>
+                        <button class="edit-profile-btn" id="editProfileBtn">Edit Profile</button>
+                    </div>
+                    
+                    <div class="profile-details" id="profileView">
+                        <div class="profile-section">
+                            <h4>Personal Information</h4>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <label>Full Name:</label>
+                                    <span id="displayFullName">-</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Email:</label>
+                                    <span id="displayEmail">-</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Bio:</label>
+                                    <span id="displayBio">-</span>
+                                </div>
+                                <div class="info-item">
+                                    <label>Location:</label>
+                                    <span id="displayLocation">-</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-section">
+                            <h4>Skills & Interests</h4>
+                            <div class="skills-container" id="displaySkills">
+                                <!-- Skills will be added dynamically -->
+                            </div>
+                        </div>
+                        
+                        <div class="profile-section">
+                            <h4>Activity Stats</h4>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <span class="stat-number" id="postsCount">0</span>
+                                    <span class="stat-label">Posts</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number" id="repliesCount">0</span>
+                                    <span class="stat-label">Replies</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number" id="likesCount">0</span>
+                                    <span class="stat-label">Likes</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number" id="mentorshipCount">0</span>
+                                    <span class="stat-label">Connections</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-edit" id="profileEdit" style="display: none;">
+                        <form class="profile-form" id="profileForm">
+                            <div class="form-section">
+                                <h4>Personal Information</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="editFullName">Full Name</label>
+                                        <input type="text" id="editFullName" name="fullName" class="form-input">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editEmail">Email</label>
+                                        <input type="email" id="editEmail" name="email" class="form-input">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editBio">Bio</label>
+                                    <textarea id="editBio" name="bio" class="form-input" rows="3" placeholder="Tell us about yourself..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="editLocation">Location</label>
+                                    <input type="text" id="editLocation" name="location" class="form-input" placeholder="City, Country">
+                                </div>
+                            </div>
+                            
+                            <div class="form-section">
+                                <h4>Skills & Interests</h4>
+                                <div class="form-group">
+                                    <label for="editSkills">Skills (comma-separated)</label>
+                                    <input type="text" id="editSkills" name="skills" class="form-input" placeholder="JavaScript, React, Node.js">
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary" id="cancelEditBtn">Cancel</button>
+                                <button type="submit" class="btn-primary">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            <section id="admin" class="tab-content">
+                <h2>Admin Panel</h2>
+                <div class="admin-controls">
+                    <div class="admin-section">
+                        <h3>User Management</h3>
+                        <button id="loadUsersBtn" class="admin-btn">Load All Users</button>
+                        <div id="usersTable" class="users-table"></div>
+                    </div>
+                    <div class="admin-section">
+                        <h3>Platform Statistics</h3>
+                        <div id="statsContainer" class="stats-container"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="auth.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
