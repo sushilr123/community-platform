@@ -45,12 +45,16 @@ app.get("/*", (req, res) => {
     return res.status(404).json({ message: "API route not found" });
   }
 
-  // Determine which HTML file to serve
-  const filePath = req.path.endsWith(".html") ? req.path : "index.html";
-  const fullPath = path.join(__dirname, "views", filePath);
+  // Determine the file path, defaulting to index.html
+  let fileName = req.path;
+  if (fileName === "/") {
+    fileName = "index.html";
+  }
 
-  // Send the file if it exists, otherwise send index.html
-  res.sendFile(fullPath, (err) => {
+  const filePath = path.join(__dirname, "views", fileName);
+
+  // Send the requested file, or index.html for SPA fallback
+  res.sendFile(filePath, (err) => {
     if (err) {
       res.sendFile(path.join(__dirname, "views", "index.html"));
     }
