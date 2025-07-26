@@ -41,7 +41,18 @@ const authenticateToken = async (req, res, next) => {
     next();
   } catch (error) {
     console.log("Auth middleware - Token verification failed:", error.message);
-    return res.status(403).json({ message: "Invalid or expired token" });
+
+    // Return 401 for expired tokens specifically
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({
+        message: "Token expired",
+        error: "TOKEN_EXPIRED",
+        expiredAt: error.expiredAt,
+      });
+    }
+
+    // Return 401 for other token errors as well (invalid signature, malformed, etc.)
+    return res.status(401).json({ message: "Invalid or expired token" });
   }
 };
 

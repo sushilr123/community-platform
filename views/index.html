@@ -86,6 +86,10 @@
                         <span class="nav-icon">❓</span>
                         <span class="nav-text">Q&A</span>
                     </button>
+                    <button data-tab="for-you" class="nav-item">
+                        <span class="nav-icon">✨</span>
+                        <span class="nav-text">For You</span>
+                    </button>
                     <button data-tab="mentorship" class="nav-item">
                         <span class="nav-icon">🤝</span>
                         <span class="nav-text">Mentorship</span>
@@ -109,8 +113,14 @@
             <section id="discussions" class="tab-content active">
                 <h2>Discussions</h2>
                 <div class="post-form">
-                    <textarea placeholder="Start a new discussion..."></textarea>
-                    <button>Post</button>
+                    <textarea id="discussionTextarea" placeholder="Start a new discussion..."></textarea>
+                    <div class="tags-section">
+                        <div class="generated-tags" id="discussionTags"></div>
+                        <div class="form-actions">
+                            <button type="button" class="generate-tags-btn" data-type="discussions">Generate Tags</button>
+                            <button type="button" class="post-btn" data-type="discussions">Post</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="posts">
                     <!-- Posts will be dynamically added here -->
@@ -119,8 +129,14 @@
             <section id="milestones" class="tab-content">
                 <h2>Milestones</h2>
                 <div class="post-form">
-                    <textarea placeholder="Share a milestone..."></textarea>
-                    <button>Post</button>
+                    <textarea id="milestonesTextarea" placeholder="Share a milestone..."></textarea>
+                    <div class="tags-section">
+                        <div class="generated-tags" id="milestonesTags"></div>
+                        <div class="form-actions">
+                            <button type="button" class="generate-tags-btn" data-type="milestones">Generate Tags</button>
+                            <button type="button" class="post-btn" data-type="milestones">Post</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="posts">
                     <!-- Milestones will be dynamically added here -->
@@ -129,11 +145,29 @@
             <section id="q-and-a" class="tab-content">
                 <h2>Q&A</h2>
                 <div class="post-form">
-                    <textarea placeholder="Ask a question..."></textarea>
-                    <button>Post</button>
+                    <textarea id="qaTextarea" placeholder="Ask a question..."></textarea>
+                    <div class="tags-section">
+                        <div class="generated-tags" id="qaTags"></div>
+                        <div class="form-actions">
+                            <button type="button" class="generate-tags-btn" data-type="q-and-a">Generate Tags</button>
+                            <button type="button" class="post-btn" data-type="q-and-a">Post</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="posts">
                     <!-- Questions will be dynamically added here -->
+                </div>
+            </section>
+            <section id="for-you" class="tab-content">
+                <h2>For You</h2>
+                <div class="ai-features-container">
+                    <div class="recommendations-section">
+                        <h3>🚀 Personalized Recommendations</h3>
+                        <p>Discover posts and mentors tailored to your interests.</p>
+                        <div id="recommendations-content" class="recommendations-grid">
+                            <!-- AI recommendations will be loaded here -->
+                        </div>
+                    </div>
                 </div>
             </section>
             <section id="mentorship" class="tab-content">
@@ -266,9 +300,28 @@
                 </div>
             </section>
         </main>
+        
+        AI Chatbot
+        <div id="chatbot-container">
+            <button id="chatbot-toggle">
+                <span class="icon-open">🤖</span>
+                <span class="icon-close">❌</span>
+            </button>
+            <div id="chatbot-window">
+                <div id="chatbot-header">
+                    <h3>AI Assistant</h3>
+                </div>
+                <div id="chatbot-messages"></div>
+                <div id="chatbot-input-container">
+                    <input type="text" id="chatbot-input" placeholder="Ask me anything...">
+                    <button id="chatbot-send">➤</button>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="js/auth-check.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/ai-features.js"></script>
     <script src="js/script.js"></script>
 </body>
 </html>

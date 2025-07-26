@@ -127,6 +127,60 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// Token refresh endpoint
+router.post("/refresh", async (req, res) => {
+  try {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+
+    if (!token) {
+      return res.status(401).json({ error: "Refresh token required" });
+    }
+
+    // Verify the token even if expired (to get user data)
+    let decoded;
+    try {
+      decoded = jwt.verify(token, JWT_SECRET);
+    } catch (error) {
+      if (error.name === "TokenExpiredError") {
+        // Allow expired tokens for refresh, but decode without verification
+        decoded = jwt.decode(token);
+        if (!decoded || !decoded.userId) {
+          return res.status(401).json({ error: "Invalid token format" });
+        }
+      } else {
+        return res.status(401).json({ error: "Invalid token" });
+      }
+    }
+
+    // Get user from database
+    const user = await User.findById(decoded.userId).select("-password");
+    if (!user || !user.isActive) {
+      return res.status(401).json({ error: "User not found or inactive" });
+    }
+
+    // Generate new token
+    const newToken = jwt.sign(
+      { userId: user._id, role: user.role },
+      JWT_SECRET,
+      { expiresIn: "24h" }
+    );
+
+    // Update last login
+    user.lastLogin = new Date();
+    await user.save();
+
+    res.json({
+      message: "Token refreshed successfully",
+      token: newToken,
+      user: user.toObject(),
+    });
+  } catch (error) {
+    console.error("Token refresh error:", error);
+    res.status(500).json({ error: "Token refresh failed" });
+  }
+});
+
 // Get current user profile
 router.get("/profile", authenticateToken, async (req, res) => {
   try {
